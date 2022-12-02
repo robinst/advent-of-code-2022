@@ -1,3 +1,6 @@
-# AOC2022
+# Advent of Code 2022 in Swift
 
-A description of this package.
+How to run:
+
+1. Open in Xcode
+2. Open test file for corresponding day and run test
