@@ -1,13 +1,14 @@
 import Foundation
 
 enum InputError: Error {
-    case notFound(String)
+    case resourceNotFound(String)
+    case parseError(String)
 }
 
 enum Input {
     static func read(_ resource: String) throws -> String {
         guard let url = Bundle.module.url(forResource: resource, withExtension: "txt", subdirectory: "Resources") else {
-            throw InputError.notFound(resource)
+            throw InputError.resourceNotFound(resource)
         }
 
         let data = try Data(contentsOf: url)
