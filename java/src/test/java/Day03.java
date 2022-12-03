@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,28 +18,12 @@ public class Day03 {
         var len = s.length() / 2;
         var first = s.substring(0, len);
         var second = s.substring(len);
-        var setA = getChars(first);
+        var setA = new HashSet<>(getChars(first));
         var setB = getChars(second);
 
         setA.retainAll(setB);
         var common = setA.stream().findFirst().get();
         return priority(common);
-    }
-
-    private static HashSet<Character> getChars(String first) {
-        var setA = new HashSet<Character>();
-        for (char c : first.toCharArray()) {
-            setA.add(c);
-        }
-        return setA;
-    }
-
-    private static int priority(Character common) {
-        if (common >= 'a' && common <= 'z') {
-            return common - 'a' + 1;
-        } else {
-            return common - 'A' + 27;
-        }
     }
 
     public static long solve2(String input) {
@@ -50,11 +36,23 @@ public class Day03 {
     }
 
     public static long score2(String a, String b, String c) {
-        var set = getChars(a);
+        var set = new HashSet<>(getChars(a));
         set.retainAll(getChars(b));
         set.retainAll(getChars(c));
         var common = set.stream().findFirst().get();
         return priority(common);
+    }
+
+    private static Set<Integer> getChars(String s) {
+        return s.chars().boxed().collect(Collectors.toSet());
+    }
+
+    private static int priority(Integer common) {
+        if (common >= 'a' && common <= 'z') {
+            return common - 'a' + 1;
+        } else {
+            return common - 'A' + 27;
+        }
     }
 
     public static void main(String[] args) throws Exception {
