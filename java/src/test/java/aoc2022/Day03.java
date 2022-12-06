@@ -1,3 +1,5 @@
+package aoc2022;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

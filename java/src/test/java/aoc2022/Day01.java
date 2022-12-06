@@ -1,4 +1,7 @@
+package aoc2022;
+
 import org.junit.jupiter.api.Test;
+import aoc2022.Resources;
 
 import java.util.Arrays;
 import java.util.Comparator;

@@ -1,3 +1,6 @@
+package aoc2022;
+
+import aoc2022.benchmarks.Timing;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -15,7 +18,7 @@ public class Day06 {
         return calculate(input, 14);
     }
 
-    private static int calculate(String input, int length) {
+    public static int calculate(String input, int length) {
         LinkedList<Character> chars = new LinkedList<>();
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
@@ -33,11 +36,37 @@ public class Day06 {
         }
         return 0;
     }
-    
-    public static void main(String[] args) throws Exception {
-        var input = Resources.readString(Resources.class.getResource("/day06.txt"));
-        System.out.println(solve1(input));
-        System.out.println(solve2(input));
+
+    public static int calculateFaster(String input, int length) {
+        int[] counts = new int[256];
+        int unique = 0;
+        LinkedList<Character> chars = new LinkedList<>();
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            chars.add(c);
+
+            var count = counts[c];
+            if (count == 0) {
+                unique++;
+            }
+            counts[c] = count + 1;
+
+            if (chars.size() > length) {
+                var removed = chars.removeFirst();
+                if (removed != null) {
+                    var removedCount = counts[removed];
+                    if (removedCount == 1) {
+                        unique--;
+                    }
+                    counts[removed] = removedCount - 1;
+                }
+            }
+
+            if (unique == length) {
+                return i + 1;
+            }
+        }
+        return 0;
     }
 
     @Test
@@ -58,7 +87,17 @@ public class Day06 {
     @Test
     void input() throws Exception {
         var input = Resources.readString(Resources.class.getResource("/day06.txt"));
-        assertEquals(1892, solve1(input));
-        assertEquals(2313, solve2(input));
+
+        Timing.time(() -> {
+            assertEquals(1892, solve1(input));
+            assertEquals(2313, solve2(input));
+            return null;
+        });
+
+        Timing.time(() -> {
+            assertEquals(1892, calculateFaster(input, 4));
+            assertEquals(2313, calculateFaster(input, 14));
+            return null;
+        });
     }
 }

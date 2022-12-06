@@ -1,3 +1,5 @@
+package aoc2022;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
