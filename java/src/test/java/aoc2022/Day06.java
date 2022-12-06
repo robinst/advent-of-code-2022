@@ -40,10 +40,8 @@ public class Day06 {
     public static int calculateFaster(String input, int length) {
         int[] counts = new int[256];
         int unique = 0;
-        LinkedList<Character> chars = new LinkedList<>();
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
-            chars.add(c);
 
             var count = counts[c];
             if (count == 0) {
@@ -51,15 +49,13 @@ public class Day06 {
             }
             counts[c] = count + 1;
 
-            if (chars.size() > length) {
-                var removed = chars.removeFirst();
-                if (removed != null) {
-                    var removedCount = counts[removed];
-                    if (removedCount == 1) {
-                        unique--;
-                    }
-                    counts[removed] = removedCount - 1;
+            if (i - length >= 0) {
+                var removed = input.charAt(i - length);
+                var removedCount = counts[removed];
+                if (removedCount == 1) {
+                    unique--;
                 }
+                counts[removed] = removedCount - 1;
             }
 
             if (unique == length) {
