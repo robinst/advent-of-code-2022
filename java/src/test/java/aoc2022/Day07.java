@@ -57,27 +57,33 @@ public class Day07 {
         var dir = new Dir("/", new ArrayList<>(), null);
         var root = dir;
 
-        var lines = input.lines().skip(1).toList();
-
+        var lines = input.lines().toList();
         for (String line : lines) {
-            if (line.startsWith("$ ls")) {
-                // Nothing to do here
-            } else if (line.startsWith("$ cd")) {
-                var target = line.substring("$ cd ".length());
-                if (target.equals("..")) {
-                    dir = dir.parent();
-                } else {
-                    var targetDir = dir.entries().stream().filter(n -> n.name().equals(target)).findFirst();
-                    dir = (Dir) targetDir.get();
+            if (line.startsWith("$ ")) {
+                var cmd = line.substring("$ ".length());
+                if (cmd.startsWith("cd ")) {
+                    var target = cmd.substring("cd ".length());
+                    if (target.equals("..")) {
+                        var parent = dir.parent();
+                        dir = parent != null ? parent : root;
+                    } else if (target.equals("/")) {
+                        dir = root;
+                    } else {
+                        var targetDir = dir.entries().stream().filter(n -> n.name().equals(target)).findFirst();
+                        dir = (Dir) targetDir.get();
+                    }
                 }
-            } else if (line.startsWith("dir ")) {
-                var dirName = line.substring("dir ".length());
-                dir.entries().add(new Dir(dirName, new ArrayList<>(), dir));
+                // If it's not cd, it's an ls command
             } else {
-                var parts = line.split(" ");
-                var size = Integer.parseInt(parts[0]);
-                var name = parts[1];
-                dir.entries().add(new File(name, size));
+                if (line.startsWith("dir ")) {
+                    var dirName = line.substring("dir ".length());
+                    dir.entries().add(new Dir(dirName, new ArrayList<>(), dir));
+                } else {
+                    var parts = line.split(" ");
+                    var size = Integer.parseInt(parts[0]);
+                    var name = parts[1];
+                    dir.entries().add(new File(name, size));
+                }
             }
         }
         return root;
