@@ -8,7 +8,7 @@ final class Day06Tests: XCTestCase {
         XCTAssertEqual(try Day06.solve1("nppdvjthqldpwncqszvftbrmjlhg"), 6)
         XCTAssertEqual(try Day06.solve1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 10)
         XCTAssertEqual(try Day06.solve1("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 11)
-        
+
         XCTAssertEqual(try Day06.solve2("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 19)
         XCTAssertEqual(try Day06.solve2("bvwbjplbgvbhsrlpgdmjqwftvncz"), 23)
         XCTAssertEqual(try Day06.solve2("nppdvjthqldpwncqszvftbrmjlhg"), 23)
