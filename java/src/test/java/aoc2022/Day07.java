@@ -63,14 +63,16 @@ public class Day07 {
                 var cmd = line.substring("$ ".length());
                 if (cmd.startsWith("cd ")) {
                     var target = cmd.substring("cd ".length());
-                    if (target.equals("..")) {
-                        var parent = dir.parent();
-                        dir = parent != null ? parent : root;
-                    } else if (target.equals("/")) {
-                        dir = root;
-                    } else {
-                        var targetDir = dir.entries().stream().filter(n -> n.name().equals(target)).findFirst();
-                        dir = (Dir) targetDir.get();
+                    switch (target) {
+                        case ".." -> {
+                            var parent = dir.parent();
+                            dir = parent != null ? parent : root;
+                        }
+                        case "/" -> dir = root;
+                        default -> {
+                            var targetDir = dir.entries().stream().filter(n -> n.name().equals(target)).findFirst();
+                            dir = (Dir) targetDir.get();
+                        }
                     }
                 }
                 // If it's not cd, it's an ls command
