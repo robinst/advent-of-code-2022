@@ -43,9 +43,8 @@ public class Day07 {
         Dir root = buildFileSystem(input);
 
         var sizes = new HashMap<Dir, Long>();
-        calculateDirSizes(root, sizes);
+        var totalSize = calculateDirSizes(root, sizes);
 
-        var totalSize = sizes.get(root);
         var available = 70000000;
         var max = available - 30000000;
 
