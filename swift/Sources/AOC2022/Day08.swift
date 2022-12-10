@@ -11,10 +11,6 @@ struct Pos: Hashable {
         return Pos(left.x + right.x, left.y + right.y)
     }
 
-    func plus(other: Pos) -> Pos {
-        return Pos(x + other.x, y + other.y)
-    }
-
     static func directions() -> [Pos] {
         return [Pos(0, -1), Pos(1, 0), Pos(0, 1), Pos(-1, 0)]
     }
