@@ -179,8 +179,8 @@ public class Day11 {
             if (line.startsWith("Monkey ")) {
                 monkeys.add(new Monkey<>());
             } else if (line.startsWith("  Starting items: ")) {
-                var numbers = Parsing.numbers(line);
-                monkeys.get(monkeys.size() - 1).items = new LinkedList<>(numbers.stream().map(Long::valueOf).toList());
+                var numbers = Parsing.numbersLong(line);
+                monkeys.get(monkeys.size() - 1).items = new LinkedList<>(numbers);
             } else if (line.startsWith("  Operation: new = ")) {
                 if (line.contains(" * ")) {
                     var numbers = Parsing.numbers(line);
