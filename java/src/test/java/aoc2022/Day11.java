@@ -16,39 +16,39 @@ class Monkey<T> {
 }
 
 sealed interface Operation {
-    int apply(int input);
+    long apply(long input);
 }
 
-record Times(int n) implements Operation {
+record Times(long n) implements Operation {
 
     @Override
-    public int apply(int input) {
+    public long apply(long input) {
         return input * n;
     }
 }
 
-record Plus(int n) implements Operation {
+record Plus(long n) implements Operation {
 
     @Override
-    public int apply(int input) {
+    public long apply(long input) {
         return input + n;
     }
 }
 
 record Squared() implements Operation {
     @Override
-    public int apply(int input) {
+    public long apply(long input) {
         return input * input;
     }
 }
 
 class Item {
 
-    final Map<Integer, Integer> remainders;
+    final Map<Long, Long> remainders;
 
-    public Item(List<Integer> divisors, int number) {
+    public Item(List<Long> divisors, long number) {
         remainders = new HashMap<>();
-        for (Integer divisor : divisors) {
+        for (Long divisor : divisors) {
             remainders.put(divisor, number % divisor);
         }
     }
@@ -56,22 +56,22 @@ class Item {
     public void apply(Operation operation) {
         if (operation instanceof Plus) {
             var n = ((Plus) operation).n();
-            for (Map.Entry<Integer, Integer> entry : remainders.entrySet()) {
+            for (Map.Entry<Long, Long> entry : remainders.entrySet()) {
                 entry.setValue((entry.getValue() + n) % entry.getKey());
             }
         } else if (operation instanceof Times) {
             var n = ((Times) operation).n();
-            for (Map.Entry<Integer, Integer> entry : remainders.entrySet()) {
+            for (Map.Entry<Long, Long> entry : remainders.entrySet()) {
                 entry.setValue((entry.getValue() * (n - entry.getKey())) % entry.getKey());
             }
         } else if (operation instanceof Squared) {
-            for (Map.Entry<Integer, Integer> entry : remainders.entrySet()) {
+            for (Map.Entry<Long, Long> entry : remainders.entrySet()) {
                 entry.setValue((entry.getValue() * entry.getValue()) % entry.getKey());
             }
         }
     }
 
-    public boolean divisibleBy(int divisibleBy) {
+    public boolean divisibleBy(long divisibleBy) {
         return remainders.get(divisibleBy) == 0;
     }
 }
@@ -82,7 +82,7 @@ public class Day11 {
         var monkeys = parse(input);
 
         for (int round = 0; round < 20; round++) {
-            for (Monkey<Integer> monkey : monkeys) {
+            for (Monkey<Long> monkey : monkeys) {
                 while (!monkey.items.isEmpty()) {
                     var item = monkey.items.removeFirst();
                     var level = monkey.operation.apply(item);
@@ -105,7 +105,7 @@ public class Day11 {
 
     public static long solve2(String input) {
         var numberMonkeys = parse(input);
-        var divisors = numberMonkeys.stream().map(m -> m.divisibleBy).toList();
+        var divisors = numberMonkeys.stream().map(m -> Long.valueOf(m.divisibleBy)).toList();
 
         var monkeys = numberMonkeys.stream().map(m -> {
             var monkey = new Monkey<Item>();
@@ -138,9 +138,37 @@ public class Day11 {
         return sorted[sorted.length - 1] * sorted[sorted.length - 2];
     }
 
-    private static List<Monkey<Integer>> parse(String input) {
+    public static long solve2MuchSimpler(String input) {
+        var monkeys = parse(input);
+        var lcm = monkeys.stream().map(m -> m.divisibleBy).reduce(1, (a, b) -> a * b);
+        System.out.println(lcm);
+
+        for (int round = 0; round < 10000; round++) {
+            for (Monkey<Long> monkey : monkeys) {
+                while (!monkey.items.isEmpty()) {
+                    var item = monkey.items.removeFirst();
+                    var level = monkey.operation.apply(item);
+                    level %= lcm;
+
+                    if (level % monkey.divisibleBy == 0) {
+                        monkeys.get(monkey.trueThrow).items.add(level);
+                    } else {
+                        monkeys.get(monkey.falseThrow).items.add(level);
+                    }
+
+                    monkey.inspections++;
+                }
+            }
+        }
+
+        var sorted = monkeys.stream().mapToLong(m -> m.inspections).sorted().toArray();
+        return sorted[sorted.length - 1] * sorted[sorted.length - 2];
+
+    }
+
+    private static List<Monkey<Long>> parse(String input) {
         var lines = input.lines().toList();
-        var monkeys = new ArrayList<Monkey<Integer>>();
+        var monkeys = new ArrayList<Monkey<Long>>();
         // Monkey 0:
         //   Starting items: 79, 98
         //   Operation: new = old * 19
@@ -152,7 +180,7 @@ public class Day11 {
                 monkeys.add(new Monkey<>());
             } else if (line.startsWith("  Starting items: ")) {
                 var numbers = Parsing.numbers(line);
-                monkeys.get(monkeys.size() - 1).items = new LinkedList<>(numbers);
+                monkeys.get(monkeys.size() - 1).items = new LinkedList<>(numbers.stream().map(Long::valueOf).toList());
             } else if (line.startsWith("  Operation: new = ")) {
                 if (line.contains(" * ")) {
                     var numbers = Parsing.numbers(line);
@@ -221,6 +249,7 @@ public class Day11 {
                 """;
         assertEquals(10605, solve1(input));
         assertEquals(2713310158L, solve2(input));
+        assertEquals(2713310158L, solve2MuchSimpler(input));
     }
 
     @Test
@@ -228,5 +257,6 @@ public class Day11 {
         var input = Resources.readString(Resources.class.getResource("/day11.txt"));
         assertEquals(61005, solve1(input));
         assertEquals(20567144694L, solve2(input));
+        assertEquals(20567144694L, solve2MuchSimpler(input));
     }
 }
