@@ -2,10 +2,7 @@ package aoc2022;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -16,6 +13,21 @@ record Pos(int x, int y) {
     Pos plus(Pos pos) {
         return new Pos(x + pos.x, y + pos.y);
     }
+
+    static List<Pos> allDirections() {
+        return Arrays.asList(new Pos(0, 1), new Pos(1, 0), new Pos(0, -1), new Pos(-1, 0));
+    }
+
+    int distance(Pos other) {
+        return Math.abs(x() - other.x()) + Math.abs(y() - other.y());
+    }
+
+    List<Pos> neighbors() {
+        return Arrays.asList(new Pos(x(), y() + 1), new Pos(x() + 1, y()), new Pos(x(), y() - 1), new Pos(x() - 1, y()));
+    }
+}
+
+record PosItem<T>(Pos pos, T item) {
 }
 
 record Grid<T>(List<List<T>> lines) {
@@ -29,12 +41,29 @@ record Grid<T>(List<List<T>> lines) {
         return Optional.empty();
     }
 
+    T getUnchecked(Pos pos) {
+        return get(pos).orElseThrow(() -> new IllegalStateException("No item at position " + pos));
+    }
+
     int height() {
         return lines.size();
     }
 
     int width() {
         return lines.get(0).size();
+    }
+
+    List<Pos> allPositions() {
+        return IntStream.range(0, width()).boxed().flatMap(x -> IntStream.range(0, height()).mapToObj(y -> new Pos(x, y))).toList();
+    }
+
+    List<PosItem<T>> neighbors(Pos ofPos) {
+        var result = new ArrayList<PosItem<T>>();
+        for (Pos pos : ofPos.neighbors()) {
+            var optional = get(pos);
+            optional.ifPresent(t -> result.add(new PosItem<>(pos, t)));
+        }
+        return result;
     }
 }
 
@@ -109,7 +138,7 @@ public class Day08 {
     }
 
     private static int viewingDistance(Grid<Integer> grid, Pos start, Pos direction) {
-        var houseHeight = grid.get(start).get();
+        var houseHeight = grid.getUnchecked(start);
 
         var pos = start.plus(direction);
 
