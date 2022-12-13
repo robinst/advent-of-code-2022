@@ -23,21 +23,12 @@ public class Day09 {
         }
 
         Pos step() {
-            switch (direction) {
-                case U -> {
-                    return new Pos(0, -1);
-                }
-                case R -> {
-                    return new Pos(1, 0);
-                }
-                case D -> {
-                    return new Pos(0, 1);
-                }
-                case L -> {
-                    return new Pos(-1, 0);
-                }
-            }
-            return new Pos(0, 0);
+            return switch (direction) {
+                case U -> new Pos(0, -1);
+                case R -> new Pos(1, 0);
+                case D -> new Pos(0, 1);
+                case L -> new Pos(-1, 0);
+            };
         }
     }
 
