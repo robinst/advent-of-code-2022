@@ -54,15 +54,15 @@ class Item {
     }
 
     public void apply(Operation operation) {
-        if (operation instanceof Plus) {
-            var n = ((Plus) operation).n();
+        if (operation instanceof Plus p) {
+            var n = p.n();
             for (Map.Entry<Long, Long> entry : remainders.entrySet()) {
                 entry.setValue((entry.getValue() + n) % entry.getKey());
             }
-        } else if (operation instanceof Times) {
-            var n = ((Times) operation).n();
+        } else if (operation instanceof Times t) {
+            var n = t.n();
             for (Map.Entry<Long, Long> entry : remainders.entrySet()) {
-                entry.setValue((entry.getValue() * (n - entry.getKey())) % entry.getKey());
+                entry.setValue((entry.getValue() * n) % entry.getKey());
             }
         } else if (operation instanceof Squared) {
             for (Map.Entry<Long, Long> entry : remainders.entrySet()) {

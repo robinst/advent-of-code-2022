@@ -93,8 +93,8 @@ public class Day07 {
     private static long calculateDirSizes(Dir dir, Map<Dir, Long> sizes) {
         long sum = 0;
         for (Node entry : dir.entries()) {
-            if (entry instanceof File) {
-                sum += ((File) entry).size();
+            if (entry instanceof File f) {
+                sum += f.size();
             } else {
                 var dirSize = calculateDirSizes((Dir) entry, sizes);
                 sum += dirSize;
