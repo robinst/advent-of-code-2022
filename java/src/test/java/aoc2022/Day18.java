@@ -57,32 +57,27 @@ public class Day18 {
 
     public static int solve2(String input) {
         var lava = parse(input);
-        var bounds = Bounds3.calculate(lava);
 
         var queue = new ArrayDeque<Pos3>();
         var air = new HashSet<>();
 
-        for (int x = bounds.minX() - 1; x <= bounds.maxX() + 1; x++) {
-            for (int y = bounds.minY() - 1; y <= bounds.maxY() + 1; y++) {
-                for (int z = bounds.minZ() - 1; z <= bounds.maxZ() + 1; z++) {
-                    var pos = new Pos3(x, y, z);
-                    // There should be a better way to build a layer of air just outside the lava than to iterate
-                    // over all positions, but I can't think of it right now.
-                    if (bounds.contains(pos)) {
-                        continue;
-                    }
-                    queue.add(pos);
-                    air.add(pos);
-                }
-            }
-        }
+        var xStats = lava.stream().mapToInt(Pos3::x).summaryStatistics();
+        var yStats = lava.stream().mapToInt(Pos3::y).summaryStatistics();
+        var zStats = lava.stream().mapToInt(Pos3::z).summaryStatistics();
+
+        var start = new Pos3(xStats.getMin() - 1, yStats.getMin(), zStats.getMin());
+        queue.add(start);
+        air.add(start);
 
         int exposed = 0;
 
         while (!queue.isEmpty()) {
             var pos = queue.removeFirst();
             for (Pos3 neighbor : pos.neighbors()) {
-                if (!bounds.contains(neighbor) || air.contains(neighbor)) {
+                if (!(neighbor.x() >= xStats.getMin() - 1 && neighbor.x() <= xStats.getMax() + 1 &&
+                        neighbor.y() >= yStats.getMin() - 1 && neighbor.y() <= yStats.getMax() + 1 &&
+                        neighbor.z() >= zStats.getMin() - 1 && neighbor.z() <= zStats.getMax() + 1) ||
+                        air.contains(neighbor)) {
                     continue;
                 }
 
