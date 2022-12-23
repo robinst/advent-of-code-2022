@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -73,19 +72,7 @@ public class Day14 {
                 var from = parsePos(path[i]);
                 var to = parsePos(path[i + 1]);
 
-                if (from.x() == to.x()) {
-                    // Vertical
-                    var fromY = Math.min(from.y(), to.y());
-                    var toY = Math.max(from.y(), to.y());
-                    IntStream.rangeClosed(fromY, toY).mapToObj(y -> new Pos(from.x(), y)).forEach(result::add);
-                } else if (from.y() == to.y()) {
-                    // Horizontal
-                    var fromX = Math.min(from.x(), to.x());
-                    var toX = Math.max(from.x(), to.x());
-                    IntStream.rangeClosed(fromX, toX).mapToObj(x -> new Pos(x, from.y())).forEach(result::add);
-                } else {
-                    throw new IllegalStateException("Unknown line from " + from + " to " + to);
-                }
+                result.addAll(from.straightLineToIncluding(to));
             }
         }
         return result;

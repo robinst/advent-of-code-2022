@@ -122,20 +122,10 @@ public class Day23 {
     }
 
     private static void print(Set<Pos> elves) {
-        int minX = Integer.MAX_VALUE;
-        int minY = Integer.MAX_VALUE;
-        int maxX = Integer.MIN_VALUE;
-        int maxY = Integer.MIN_VALUE;
+        var bounds = PosBounds.calculate(elves);
 
-        for (Pos elf : elves) {
-            minX = Math.min(elf.x(), minX);
-            minY = Math.min(elf.y(), minY);
-            maxX = Math.max(elf.x(), maxX);
-            maxY = Math.max(elf.y(), maxY);
-        }
-
-        for (int y = minY; y <= maxY; y++) {
-            for (int x = minX; x <= maxX; x++) {
+        for (int y = bounds.minY(); y <= bounds.maxY(); y++) {
+            for (int x = bounds.minX(); x <= bounds.maxX(); x++) {
                 if (elves.contains(new Pos(x, y))) {
                     System.out.print('#');
                 } else {
