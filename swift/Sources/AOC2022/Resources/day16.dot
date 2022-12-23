@@ -1,0 +1,126 @@
+strict graph V {
+AV [label="AV rate=0"]
+JI [label="JI rate=0"]
+FF [label="FF rate=0"]
+CG [label="CG rate=10"]
+RC [label="RC rate=18"]
+ZJ [label="ZJ rate=0"]
+GJ [label="GJ rate=21"]
+VJ [label="VJ rate=0"]
+ER [label="ER rate=0"]
+QO [label="QO rate=24"]
+LN [label="LN rate=0"]
+SU [label="SU rate=0"]
+AJ [label="AJ rate=12"]
+YJ [label="YJ rate=0"]
+JW [label="JW rate=0"]
+WI [label="WI rate=13"]
+VS [label="VS rate=0"]
+TI [label="TI rate=0"]
+VD [label="VD rate=17"]
+TX [label="TX rate=0"]
+HP [label="HP rate=0"]
+BK [label="BK rate=0"]
+ET [label="ET rate=0"]
+VY [label="VY rate=0"]
+DZ [label="DZ rate=0"]
+ZK [label="ZK rate=0"]
+TG [label="TG rate=0"]
+YI [label="YI rate=0"]
+XO [label="XO rate=0"]
+ZR [label="ZR rate=11"]
+EQ [label="EQ rate=0"]
+PI [label="PI rate=4"]
+VO [label="VO rate=0"]
+WR [label="WR rate=0"]
+TF [label="TF rate=0"]
+FR [label="FR rate=22"]
+MK [label="MK rate=0"]
+AZ [label="AZ rate=0"]
+TC [label="TC rate=0"]
+GQ [label="GQ rate=0"]
+YW [label="YW rate=0"]
+AA [label="AA rate=0"]
+MF [label="MF rate=0"]
+ZL [label="ZL rate=0"]
+LM [label="LM rate=3"]
+KU [label="KU rate=9"]
+FV [label="FV rate=23"]
+EU [label="EU rate=0"]
+KV [label="KV rate=0"]
+QX [label="QX rate=0"]
+RO [label="RO rate=0"]
+TR [label="TR rate=0"]
+VQ [label="VQ rate=0"]
+HF [label="HF rate=0"]
+RV [label="RV rate=0"]
+KX [label="KX rate=0"]
+UJ [label="UJ rate=0"]
+AX [label="AX rate=5"]
+XL [label="XL rate=0"]
+AD [label="AD rate=0"]
+EI [label="EI rate=0"]
+OF [label="OF rate=19"]
+AV -- {AX, PI};
+JI -- {VD, HF};
+FF -- {ZL, CG};
+CG  -- {TI, SU, RV, FF, QX};
+RC  -- {EQ, WR, AD};
+ZJ -- {GJ, WI};
+GJ  -- {TG, YJ, EU, AZ, ZJ};
+VJ -- {UJ, AA};
+ER -- {QO, ZK};
+QO  -- {MF, ER};
+LN -- {ZR, TI};
+SU -- {CG, LM};
+AJ  -- {QX, JW, TR, MK};
+YJ -- {GJ, EQ};
+JW -- {YI, AJ};
+WI  -- {XO, ZJ, ZL};
+VS -- {XL, VD};
+TI -- {LN, CG};
+VD  -- {TR, VS, JI, GQ, VO};
+TX -- {FV, WR};
+HP -- {AX, ET};
+BK -- {PI, AD};
+ET -- {ZR, HP};
+VY -- {KU, LM};
+DZ -- {VO, AA};
+ZK -- {FR, ER};
+TG -- {GJ, AX};
+YI -- {JW, LM};
+XO -- {ZR, WI};
+ZR  -- {KX, AZ, ET, LN, XO};
+EQ -- {RC, YJ};
+PI -- {BK, KX, VQ, EU, AV};
+VO -- {VD, DZ};
+WR -- {TX, RC};
+TF -- {FR, KU};
+FR  -- {ZK, TF};
+MK -- {AJ, YW};
+AZ -- {GJ, ZR};
+TC -- {KU, RO};
+GQ -- {MF, VD};
+YW -- {MK, KU};
+AA -- {RO, EI, VJ, VQ, DZ};
+MF -- {QO, GQ};
+ZL -- {WI, FF};
+LM -- {YI, SU, UJ, VY, HF};
+KU -- {XL, TC, TF, VY, YW};
+FV  -- {KV, TX};
+EU -- {PI, GJ};
+KV -- {FV, OF};
+QX -- {AJ, CG};
+RO -- {AA, TC};
+TR -- {VD, AJ};
+VQ -- {AA, PI};
+HF -- {JI, LM};
+RV -- {EI, CG};
+KX -- {PI, ZR};
+UJ -- {LM, VJ};
+AX -- {TG, AV, HP};
+XL -- {KU, VS};
+AD -- {BK, RC};
+EI -- {RV, AA};
+OF  -- {KV};
+}
