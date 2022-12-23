@@ -24,7 +24,7 @@ enum Op {
     TIMES,
     DIVIDE;
 
-    public long run(long a, long b) {
+    public long apply(long a, long b) {
         return switch (this) {
             case PLUS -> a + b;
             case MINUS -> a - b;
@@ -84,7 +84,7 @@ public class Day21 {
         if (term instanceof NumberTerm t) {
             return t.number();
         } else if (term instanceof OpTerm o) {
-            return o.op().run(calculate(terms, o.a()), calculate(terms, o.b()));
+            return o.op().apply(calculate(terms, o.a()), calculate(terms, o.b()));
         } else {
             throw new IllegalStateException("Unknown term " + term);
         }
@@ -93,12 +93,12 @@ public class Day21 {
     private static Term buildTree(Map<String, Term> terms, String name) {
         var term = terms.get(name);
         if (term instanceof OpTerm o) {
-            try {
-                // Simplify so that at least one side of each op is a number later
-                return new NumberTerm(calculate(terms, name));
-            } catch (IllegalStateException e) {
-                return new OpTermTree(buildTree(terms, o.a()), o.op(), buildTree(terms, o.b()));
+            var a = buildTree(terms, o.a());
+            var b = buildTree(terms, o.b());
+            if (a instanceof NumberTerm numA && b instanceof NumberTerm numB) {
+                return new NumberTerm(o.op().apply(numA.number(), numB.number()));
             }
+            return new OpTermTree(a, o.op(), b);
         } else {
             return term;
         }
