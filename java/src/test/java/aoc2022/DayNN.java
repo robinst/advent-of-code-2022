@@ -26,16 +26,10 @@ public class DayNN {
         return 0;
     }
 
-    public static void main(String[] args) throws Exception {
-        var input = Resources.readString(Resources.class.getResource("/dayNN.txt"));
-        System.out.println(solve1(input));
-        System.out.println(solve2(input));
-    }
-
     @Test
     void example() {
         final String input = """
-                
+                                
                 """;
         assertEquals(0, solve1(input));
         assertEquals(0, solve2(input));
