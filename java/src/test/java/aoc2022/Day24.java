@@ -31,7 +31,6 @@ public class Day24 {
     record BlizzardMap(int width, int height, Pos start, Pos end, List<Blizzard> blizzards) {
 
         boolean contains(Pos pos) {
-            // TODO: Is it legal to step back onto the starting tile?
             return pos.x() >= 0 && pos.x() < width && pos.y() >= 0 && pos.y() < height;
         }
     }
@@ -84,10 +83,6 @@ public class Day24 {
 
             if (iteration % 100_000 == 0) {
                 System.out.println("Iteration " + iteration + ", states: " + states.size());
-            }
-
-            if (iteration > 5000000) {
-                return best;
             }
 
             var currentPos = state.pos();
